@@ -4,6 +4,11 @@ namespace src;
 
 class MathTool
 {
+    /// <summary>
+    /// Generates a random prime number with a specified number of digits.
+    /// </summary>
+    /// <param name="size">The number of digits in the prime number.</param>
+    /// <returns>A random prime number.</returns>
     public static ulong GenerateRandomPrime(int size)
     {
         ulong randomNumber = 0;
@@ -16,6 +21,11 @@ class MathTool
         return randomNumber;
     }
 
+    /// <summary>
+    /// Checks if a given number is a prime number.
+    /// </summary>
+    /// <param name="number">The number to check for primality.</param>
+    /// <returns>True if the number is prime, false otherwise.</returns>
     public static bool IsPrime(ulong number)
     {
         if (number < 2)
@@ -30,6 +40,12 @@ class MathTool
         return true;
     }
 
+    /// <summary>
+    /// Calculates the modular inverse of a number 'e' modulo 'm'.
+    /// </summary>
+    /// <param name="e">The number for which to find the modular inverse.</param>
+    /// <param name="m">The modulo value.</param>
+    /// <returns>The modular inverse of 'e' modulo 'm'.</returns>
     public static ulong ModuloInverse(ulong e, ulong m)
     {
         ulong m0 = m;
@@ -59,10 +75,17 @@ class MathTool
         return x;
     }
 
+    /// <summary>
+    /// Calculates the greatest common divisor (GCD) of two numbers.
+    /// </summary>
+    /// <param name="a">The first number.</param>
+    /// <param name="b">The second number.</param>
+    /// <returns>The GCD of 'a' and 'b'.</returns>
     public static ulong Pgcd(ulong a, ulong b)
     {
         ulong r = 0;
 
+        // Use Euclidean Algorithm to find GCD
         while (b != 0)
         {
             r = a % b;

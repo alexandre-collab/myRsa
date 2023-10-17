@@ -27,6 +27,9 @@ class Keygen
         this.size = size;
     }
 
+    /// <summary>
+    /// Generates the public and private keys.
+    /// </summary>
     public void GenerateKey()
     {
         this.Calculate();
@@ -34,6 +37,9 @@ class Keygen
         this.GeneratePrivateKey();
     }
 
+    /// <summary>
+    /// Calculates the key components p, q, n, n', d, and e.
+    /// </summary>
     private void Calculate()
     {
         // Générer 2 nombres premier différents de 10 chiffres de long: p & q
@@ -68,6 +74,9 @@ class Keygen
 
     }
 
+    /// <summary>
+    /// Generates the public key and saves it to a file.
+    /// </summary>
     private void GeneratePublicKey()
     {
         string contentPublicFile = WriteStartingLine(PUBLIC_KEY);
@@ -88,6 +97,10 @@ class Keygen
         return;
     }
 
+
+    /// <summary>
+    /// Generates the private key and saves it to a file.
+    /// </summary>
     private void GeneratePrivateKey()
     {
         string contentPrivateFile = WriteStartingLine(PRIVATE_KEY);
@@ -108,6 +121,11 @@ class Keygen
         return;
     }
 
+    /// <summary>
+    /// Writes the starting line of the key file.
+    /// </summary>
+    /// <param name="keyType">The type of key (public or private).</param>
+    /// <returns>The starting line of the key file.</returns>
     private static string WriteStartingLine(string keyType)
     {
 
@@ -125,6 +143,11 @@ class Keygen
         }
     }
 
+    /// <summary>
+    /// Writes the ending line of the key file.
+    /// </summary>
+    /// <param name="keyType">The type of key (public or private).</param>
+    /// <returns>The ending line of the key file.</returns>
     private static string WriteEndingLine(string keyType)
     {
 
