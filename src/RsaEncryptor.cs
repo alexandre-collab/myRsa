@@ -3,12 +3,12 @@ using System.IO;
 using System.Linq;
 
 namespace src;
-public class Crypt
+public class RsaEncryptor
 {
     private readonly string publicKey;
     private readonly string textToEncrypt;
 
-    public Crypt(string publicKey, string textToEncrypt)
+    public RsaEncryptor(string publicKey, string textToEncrypt)
     {
         this.publicKey = publicKey;
         this.textToEncrypt = textToEncrypt;

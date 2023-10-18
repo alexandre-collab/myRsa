@@ -119,8 +119,8 @@ class Program
                         textToEncrypt = File.ReadAllText(textToEncrypt);
                     }
 
-                    Crypt crypt = new Crypt(publicKey, textToEncrypt);
-                    crypt.Encrypt(useOutputFile);
+                    RsaEncryptor rsaEncryptor = new RsaEncryptor(publicKey, textToEncrypt);
+                    rsaEncryptor.Encrypt(useOutputFile);
 
                     Console.WriteLine("Texte chiffré avec succès.");
                 }
@@ -131,7 +131,8 @@ class Program
 
                 break;
             case "decrypt":
-                Console.WriteLine("decrypt");
+
+
                 break;
             default:
                 Console.WriteLine("Erreur : Commande invalide. Utilisez 'help' pour afficher le manuel.");
