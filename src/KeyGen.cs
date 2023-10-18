@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 namespace src;
 
@@ -55,11 +56,13 @@ class Keygen
         // Calculer n' = (p - 1) * (q - 1)
         this.nPrime = (this.p - 1) * (this.q - 1);
 
-        //  Faire une boucle
-        //  qui teste des valeurs pour e et d jusqu’à ce que :
-        // ◦ e soit premier
-        // ◦ e soit différent de d
-        // ◦ ed % n’ = 1 (ou, dit autrement, ed = 1 modulo n’)
+        /*          
+        Faire une boucle
+         qui teste des valeurs pour e et d jusqu’à ce que :
+        ◦ e soit premier
+        ◦ e soit différent de d
+        ◦ ed % n’ = 1 (ou, dit autrement, ed = 1 modulo n’)
+        */
 
         // Trouver e tel que (e * d) % n' == 1
 
@@ -83,10 +86,9 @@ class Keygen
         contentPublicFile += "\n";
 
         // base64_encode(decimal_vers_hexa(n), retour chariot, decimal_vers_hexa(e))
-
-        contentPublicFile += Convert.ToBase64String(BitConverter.GetBytes(this.n));
-        contentPublicFile += "\n";
-        contentPublicFile += Convert.ToBase64String(BitConverter.GetBytes(this.e));
+        string publicKey = this.n.ToString("X") + "\n" + this.e.ToString("X");
+        byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
+        contentPublicFile += Convert.ToBase64String(publicKeyBytes);
 
         contentPublicFile += "\n";
         contentPublicFile += WriteEndingLine(PUBLIC_KEY);
@@ -107,10 +109,9 @@ class Keygen
         contentPrivateFile += "\n";
 
         // base64_encode(decimal_vers_hexa(n), retour chariot, decimal_vers_hexa(d))
-
-        contentPrivateFile += Convert.ToBase64String(BitConverter.GetBytes(this.n));
-        contentPrivateFile += "\n";
-        contentPrivateFile += Convert.ToBase64String(BitConverter.GetBytes(this.d));
+        string privateKey = this.n.ToString("X") + "\n" + this.d.ToString("X");
+        byte[] privateKeyBytes = Encoding.UTF8.GetBytes(privateKey);
+        contentPrivateFile += Convert.ToBase64String(privateKeyBytes);
 
         contentPrivateFile += "\n";
         contentPrivateFile += WriteEndingLine(PRIVATE_KEY);
