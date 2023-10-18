@@ -96,4 +96,21 @@ class MathTool
         return a;
     }
 
+    internal static ulong ModuloExponentiation(ulong v, ulong e, ulong n)
+    {
+        ulong result = 1;
+
+        while (e > 0)
+        {
+            if ((e & 1) == 1)
+            {
+                result = (result * v) % n;
+            }
+
+            e >>= 1;
+            v = (v * v) % n;
+        }
+
+        return result;
+    }
 }

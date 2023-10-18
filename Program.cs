@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using src;
 class Program
 {
@@ -7,7 +8,7 @@ class Program
 
         if (args.Length == 0 || args[0].ToLower() == "help")
         {
-            displayHelp();
+            DisplayHelp();
             return;
         }
 
@@ -20,8 +21,11 @@ class Program
                 {
                     string key = args[1];
                     int size = 10;
+                    string fileName = "monRSA";
 
-                    for (int i = 2; i < args.Length; i++)
+                    int currentArgumentIndex = 2;
+
+                    for (int i = currentArgumentIndex; i < args.Length; i++)
                     {
                         switch (args[i])
                         {
@@ -38,6 +42,18 @@ class Program
                                     return;
                                 }
                                 break;
+                            case "-f":
+                                if (i + 1 < args.Length && !string.IsNullOrEmpty(args[i + 1]))
+                                {
+                                    fileName = args[i + 1];
+                                    i++;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Erreur : Nom de fichier non spécifié.");
+                                    return;
+                                }
+                                break;
 
                             default:
                                 Console.WriteLine($"Argument {args[i]} inconnu.");
@@ -45,18 +61,74 @@ class Program
                         }
                     }
 
-                    Keygen keygen = new Keygen(key, size: size);
+                    Keygen keygen = new Keygen(key, fileName: fileName, size: size);
                     keygen.GenerateKey();
 
-                    Console.WriteLine("Key generated successfully.");
+                    Console.WriteLine("Clés générées avec succès.");
                 }
                 else
                 {
-                    Console.WriteLine("Please provide a valid key as an argument for keygen.");
+                    Console.WriteLine("Veuillez spécifier la clé.");
                 }
                 break;
             case "crypt":
-                Console.WriteLine("crypt");
+                if (args.Length > 1 && !string.IsNullOrEmpty(args[1]) && !string.IsNullOrEmpty(args[2]))
+                {
+                    string publicKey = args[1];
+                    string textToEncrypt = args[2];
+                    bool useInputFile = false;
+                    bool useOutputFile = false;
+
+                    int currentArgumentIndex = 3;
+
+                    for (int i = currentArgumentIndex; i < args.Length; i++)
+                    {
+                        switch (args[i])
+                        {
+                            // input file is optional, define by -i <input file>
+                            case "-i":
+                                useInputFile = true;
+                                break;
+
+                            // output file is optional, define by -o <output file>
+                            case "-o":
+                                useOutputFile = true;
+                                break;
+
+                            default:
+                                Console.WriteLine($"Argument {args[i]} inconnu.");
+                                break;
+                        }
+                    }
+
+                    if (useInputFile)
+                    {
+                        if (!File.Exists(textToEncrypt))
+                        {
+                            Console.WriteLine($"Le fichier {textToEncrypt} n'existe pas.");
+                            return;
+                        }
+
+                        if (!File.Exists(publicKey))
+                        {
+                            Console.WriteLine($"Le fichier {publicKey} n'existe pas.");
+                            return;
+                        }
+
+                        publicKey = File.ReadAllText(publicKey);
+                        textToEncrypt = File.ReadAllText(textToEncrypt);
+                    }
+
+                    Crypt crypt = new Crypt(publicKey, textToEncrypt);
+                    crypt.Encrypt(useOutputFile);
+
+                    Console.WriteLine("Texte chiffré avec succès.");
+                }
+                else
+                {
+                    Console.WriteLine("Des paramètres sont manquants.");
+                }
+
                 break;
             case "decrypt":
                 Console.WriteLine("decrypt");
@@ -67,7 +139,7 @@ class Program
         }
     }
 
-    static void displayHelp()
+    static void DisplayHelp()
     {
         Console.WriteLine("Manuel d'utilisation :");
         Console.WriteLine("Syntaxe : monRSA <commande> [<clé>] [<texte>] [switchs]");
