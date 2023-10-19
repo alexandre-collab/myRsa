@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Numerics;
 using System.Text;
 
 namespace src;
@@ -12,7 +13,7 @@ class Keygen
     private readonly string key;
     private readonly string fileName;
     private readonly int size;
-    private ulong p, q, n, nPrime, d, e = 0;
+    private BigInteger  p, q, n, nPrime, d, e = 0;
 
 
     /// <summary>
@@ -86,7 +87,7 @@ class Keygen
         contentPublicFile += "\n";
 
         // base64_encode(decimal_vers_hexa(n), retour chariot, decimal_vers_hexa(e))
-        string publicKey = this.n.ToString("X") + "\n" + this.e.ToString("X");
+        string publicKey = "0x" + this.n.ToString("X") + "\n" + "0x" + this.e.ToString("X");
         byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
         contentPublicFile += Convert.ToBase64String(publicKeyBytes);
 

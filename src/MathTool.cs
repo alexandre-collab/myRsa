@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 namespace src;
 
@@ -9,13 +10,13 @@ class MathTool
     /// </summary>
     /// <param name="size">The number of digits in the prime number.</param>
     /// <returns>A random prime number.</returns>
-    public static ulong GenerateRandomPrime(int size)
+    public static BigInteger  GenerateRandomPrime(int size)
     {
-        ulong randomNumber = 0;
+        BigInteger  randomNumber = 0;
 
         while (!IsPrime(randomNumber))
         {
-            randomNumber = (ulong)new Random().Next((int)Math.Pow(10, size - 1), (int)Math.Pow(10, size) - 1);
+            randomNumber = (BigInteger)new Random().Next((int)Math.Pow(10, size - 1), (int)Math.Pow(10, size) - 1);
         }
 
         return randomNumber;
@@ -26,12 +27,12 @@ class MathTool
     /// </summary>
     /// <param name="number">The number to check for primality.</param>
     /// <returns>True if the number is prime, false otherwise.</returns>
-    public static bool IsPrime(ulong number)
+    public static bool IsPrime(BigInteger number)
     {
         if (number < 2)
             return false;
 
-        for (ulong i = 2; i <= Math.Sqrt(number); i++)
+        for (ulong i = 2; i <= Math.Sqrt((double)number); i++)
         {
             if (number % i == 0)
                 return false;
@@ -46,10 +47,10 @@ class MathTool
     /// <param name="e">The number for which to find the modular inverse.</param>
     /// <param name="m">The modulo value.</param>
     /// <returns>The modular inverse of 'e' modulo 'm'.</returns>
-    public static ulong ModuloInverse(ulong e, ulong m)
+    public static BigInteger  ModuloInverse(BigInteger e, BigInteger  m)
     {
-        ulong m0 = m;
-        ulong y = 0, x = 1;
+        BigInteger  m0 = m;
+        BigInteger  y = 0, x = 1;
 
         if (m == 1)
             return 0;
@@ -57,8 +58,8 @@ class MathTool
         // Extended Euclidean Algorithm to find modular inverse
         while (e > 1)
         {
-            ulong q = e / m;
-            ulong t = m;
+            BigInteger q = (e / m);
+            BigInteger t = m;
 
             m = e % m;
             e = t;
@@ -81,14 +82,14 @@ class MathTool
     /// <param name="a">The first number.</param>
     /// <param name="b">The second number.</param>
     /// <returns>The GCD of 'a' and 'b'.</returns>
-    public static ulong Pgcd(ulong a, ulong b)
+    public static BigInteger  Pgcd(BigInteger  a, BigInteger  b)
     {
         ulong r = 0;
 
         // Use Euclidean Algorithm to find GCD
         while (b != 0)
         {
-            r = a % b;
+            r = (ulong)(a % b);
             a = b;
             b = r;
         }
