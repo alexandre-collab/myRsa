@@ -97,9 +97,16 @@ class MathTool
         return a;
     }
 
-    internal static ulong ModuloExponentiation(ulong v, ulong e, ulong n)
+    /// <summary>
+    /// Calculates the modular exponentiation of a number 'v' to the power of 'e' modulo 'n'.
+    /// </summary>
+    /// <param name="v">The base number.</param>
+    /// <param name="e">The exponent.</param>
+    /// <param name="n">The modulo value.</param>
+    /// <returns>The modular exponentiation of 'v' to the power of 'e' modulo 'n'.</returns>
+    internal static BigInteger ModuloExponentiation(BigInteger v, BigInteger e, BigInteger n)
     {
-        ulong result = 1;
+        BigInteger result = 1;
 
         while (e > 0)
         {
