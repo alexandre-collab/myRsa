@@ -121,8 +121,6 @@ class Program
 
                     RsaEncryptor rsaEncryptor = new RsaEncryptor(publicKey, textToEncrypt);
                     rsaEncryptor.Encrypt(useOutputFile);
-
-                    Console.WriteLine("Texte chiffré avec succès.");
                 }
                 else
                 {
@@ -131,7 +129,60 @@ class Program
 
                 break;
             case "decrypt":
+                if (args.Length > 1 && !string.IsNullOrEmpty(args[1]) && !string.IsNullOrEmpty(args[2]))
+                {
+                    string privateKey = args[1];
+                    string textToDecrypt = args[2];
+                    bool useInputFile = false;
+                    bool useOutputFile = false;
 
+                    int currentArgumentIndex = 3;
+
+                    for (int i = currentArgumentIndex; i < args.Length; i++)
+                    {
+                        switch (args[i])
+                        {
+                            // input file is optional, define by -i <input file>
+                            case "-i":
+                                useInputFile = true;
+                                break;
+
+                            // output file is optional, define by -o <output file>
+                            case "-o":
+                                useOutputFile = true;
+                                break;
+
+                            default:
+                                Console.WriteLine($"Argument {args[i]} inconnu.");
+                                break;
+                        }
+                    }
+
+                    if (useInputFile)
+                    {
+                        if (!File.Exists(textToDecrypt))
+                        {
+                            Console.WriteLine($"Le fichier {textToDecrypt} n'existe pas.");
+                            return;
+                        }
+
+                        if (!File.Exists(privateKey))
+                        {
+                            Console.WriteLine($"Le fichier {privateKey} n'existe pas.");
+                            return;
+                        }
+
+                        privateKey = File.ReadAllText(privateKey);
+                        textToDecrypt = File.ReadAllText(textToDecrypt);
+                    }
+
+                    RsaDecryptor rsaDecryptor = new RsaDecryptor(privateKey, textToDecrypt);
+                    rsaDecryptor.Decrypt(useOutputFile);
+                }
+                else
+                {
+                    Console.WriteLine("Des paramètres sont manquants.");
+                }
 
                 break;
             default:
