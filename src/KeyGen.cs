@@ -87,7 +87,7 @@ class Keygen
         contentPublicFile += "\n";
 
         // base64_encode(decimal_vers_hexa(n), retour chariot, decimal_vers_hexa(e))
-        string publicKey = "0x" + this.n.ToString("X") + "\n" + "0x" + this.e.ToString("X");
+        string publicKey = this.n.ToString("X") + "\n" + this.e.ToString("X");
         byte[] publicKeyBytes = Encoding.UTF8.GetBytes(publicKey);
         contentPublicFile += Convert.ToBase64String(publicKeyBytes);
 
