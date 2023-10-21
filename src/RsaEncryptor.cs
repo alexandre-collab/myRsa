@@ -50,9 +50,24 @@ public class RsaEncryptor
         string nString = publicKeyDecodedLines[0];
         string eString = publicKeyDecodedLines[1];
 
+        // Remove "0x" prefix if it exists
+        nString = nString.Replace("0x", "");
+        eString = eString.Replace("0x", "");
+
         // convert hexa to decimal
-        BigInteger n = BigInteger.Parse(nString, System.Globalization.NumberStyles.HexNumber);
-        BigInteger e = BigInteger.Parse(eString, System.Globalization.NumberStyles.HexNumber);
+        BigInteger n = 0;
+        BigInteger e = 0;
+
+        try
+        {
+            n = BigInteger.Parse(nString, System.Globalization.NumberStyles.HexNumber);
+            e = BigInteger.Parse(eString, System.Globalization.NumberStyles.HexNumber);
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Erreur : Clé publique invalide. Vérifiez que les valeurs n et e sont bien en hexadécimal.");
+            return;
+        }
 
         // /* Pour chiffrer une chaîne de caractères avec la clé publique n et e, il faut :
         // • Transformer chaque caractère en entrée en un chiffre en utilisant le code ASCII

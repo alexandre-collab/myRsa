@@ -47,8 +47,24 @@ public class RsaDecryptor
         string nString = privateKeyDecodedLines[0];
         string dString = privateKeyDecodedLines[1];
 
-        BigInteger n = BigInteger.Parse(nString, System.Globalization.NumberStyles.HexNumber);
-        BigInteger d = BigInteger.Parse(dString, System.Globalization.NumberStyles.HexNumber);
+        // Remove "0x" prefix if it exists
+        nString = nString.Replace("0x", "");
+        dString = dString.Replace("0x", "");
+
+        // convert hexa to decimal
+
+        BigInteger n = 0;
+        BigInteger d = 0;
+        try
+        {
+            n = BigInteger.Parse(nString, System.Globalization.NumberStyles.HexNumber);
+            d = BigInteger.Parse(dString, System.Globalization.NumberStyles.HexNumber);
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Erreur : Clé privée invalide. Vérifiez que la clé privée est bien au format hexadécimal.");
+            return;
+        }
 
         /* « défaire » les 2 encodages de la dernière étape de chiffrement : Base64 décode puis ASCII encode
         • Découper la chaîne en blocs C de longueur (taille de n) – 1 de long
