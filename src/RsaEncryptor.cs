@@ -14,6 +14,11 @@ public class RsaEncryptor
         this.textToEncrypt = textToEncrypt;
     }
 
+
+    /// <summary>
+    /// Encrypts the text using the public key.
+    /// </summary>
+    /// <param name="useOutputFilePath">If true, the encrypted text will be written to a file named 'encrypted.txt'.</param>
     public void Encrypt(bool useOutputFilePath)
     {
         if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(textToEncrypt))
@@ -74,12 +79,11 @@ public class RsaEncryptor
                 asciiCodeString = "0" + asciiCodeString;
             }
 
-            // Console.WriteLine($"asciiCodeString: {(char)Convert.ToInt32(asciiCodeString)}");
-
             encryptedText += asciiCodeString;
         }
 
         int blockSize = (int)(n.ToString().Length - 1);
+        int cBlockLength = blockSize + 1;
 
         string encryptedTextBlocks = "";
 
@@ -96,8 +100,15 @@ public class RsaEncryptor
             // ◦ Chaque bloc en clair B est chiffré en un bloc C par la formule C = B exposant e modulo n
             BigInteger encryptedBlockInt = MathTool.ModuloExponentiation(blockInt, e, n);
 
+            // In case the start of b should be a or multiples 0 but the integer convertion erase it, we add them to have the right length of B block
+            string zeroToCompleteLengthOfBlockC = "";
+            for (int j = 0; j < cBlockLength - encryptedBlockInt.ToString().Length; j++)
+            {
+                zeroToCompleteLengthOfBlockC += "0";
+            }
+
             // • Assembler les blocs chiffrés C en une suite de chiffres
-            encryptedTextBlocks += encryptedBlockInt.ToString();
+            encryptedTextBlocks += zeroToCompleteLengthOfBlockC + encryptedBlockInt.ToString();
         }
 
         // • Transformer cette suite de chiffres en texte affichable grâce un double encodage ASCII puis Base64 
@@ -112,6 +123,7 @@ public class RsaEncryptor
         {
             string outputFilePath = "encrypted.txt";
             File.WriteAllText(outputFilePath, encryptedTextBase64);
+            Console.WriteLine($"Texte chiffré dans le fichier : {outputFilePath}");
         }
         else
         {
