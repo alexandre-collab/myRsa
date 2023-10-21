@@ -98,7 +98,6 @@ public class RsaEncryptor
 
             // • Assembler les blocs chiffrés C en une suite de chiffres
             encryptedTextBlocks += encryptedBlockInt.ToString();
-            break;
         }
 
         // • Transformer cette suite de chiffres en texte affichable grâce un double encodage ASCII puis Base64 
