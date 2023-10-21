@@ -67,46 +67,38 @@ public class RsaEncryptor
         {
             // convert to ascii
             string asciiCodeString = ((int)c).ToString();
+
+            // if on 2 digits, add a 0 at the beginning to have 3 digits blocks (ASCII)
+            if (asciiCodeString.Length == 2)
+            {
+                asciiCodeString = "0" + asciiCodeString;
+            }
+
+            // Console.WriteLine($"asciiCodeString: {(char)Convert.ToInt32(asciiCodeString)}");
+
             encryptedText += asciiCodeString;
         }
 
         int blockSize = (int)(n.ToString().Length - 1);
 
-        string blockExpanded = "";
-
-        // ◦ On prend des blocs de longueur (taille de n) – 1 de long
-        for (int i = 0; i < encryptedText.Length; i += blockSize)
-        {
-            int endIndex = Math.Min(i + blockSize, encryptedText.Length);
-            string block = encryptedText.Substring(i, endIndex - i);
-
-            // ◦ On part de la droite et on complète, éventuellement le dernier avec des 0 non significatifs
-            int nbZeroToAdd = blockSize - block.Length;
-            while (nbZeroToAdd > 0)
-            {
-                // add "0" to the left of the block concatened
-                blockExpanded = "0" + blockExpanded;
-                nbZeroToAdd--;
-            }
-
-            blockExpanded += block;
-        }
-
         string encryptedTextBlocks = "";
 
         // ◦ On prend des blocs de longueur (taille de n) – 1 de long
-        for (int i = 0; i < blockExpanded.Length; i += blockSize)
+        for (int i = 0; i < encryptedText.Length - 1; i += blockSize)
         {
-            int endIndex = Math.Min(i + blockSize, blockExpanded.Length);
-            string block = blockExpanded.Substring(i, endIndex - i);
+            // Découper la chaîne en blocs C de longueur (taille de n) – 1 de long
+            int intervalMin = i;
+            int intervalMax = Math.Min(blockSize, encryptedText.Length - i);
 
-            BigInteger blockInt = Convert.ToUInt64(block);
+            string block = encryptedText.Substring(intervalMin, intervalMax);
+
+            BigInteger blockInt = BigInteger.Parse(block);
             // ◦ Chaque bloc en clair B est chiffré en un bloc C par la formule C = B exposant e modulo n
-            // PS : Performant sur mon pc (instantané), 16 go de ram + c#. Je ne sais pas si c'est le cas sur tous les pc.
             BigInteger encryptedBlockInt = MathTool.ModuloExponentiation(blockInt, e, n);
 
             // • Assembler les blocs chiffrés C en une suite de chiffres
             encryptedTextBlocks += encryptedBlockInt.ToString();
+            break;
         }
 
         // • Transformer cette suite de chiffres en texte affichable grâce un double encodage ASCII puis Base64 
@@ -126,6 +118,7 @@ public class RsaEncryptor
         {
             Console.WriteLine($"Texte chiffré : {encryptedTextBase64}");
         }
+
     }
 
 }
