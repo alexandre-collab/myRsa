@@ -191,6 +191,7 @@ class Program
         }
     }
 
+    // Display the help
     static void DisplayHelp()
     {
         Console.WriteLine("Manuel d'utilisation :");
