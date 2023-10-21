@@ -6,6 +6,8 @@
 Require .net sdk for be builded 7 :
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.401-windows-x64-installer
 
+PS : Les binaires de l'applications sont dans le repos, dans le dossier application, si jamais vous ne voulez pas build l'application & télecharger le sdk .net.
+
 Compilation & géneration du binaire :
 
 Mode dev : dotnet build
