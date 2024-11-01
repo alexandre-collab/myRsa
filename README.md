@@ -1,4 +1,4 @@
-# myRsa Arod Alexandre with c# .NET :)
+# myRsa .NET
 
 ## Getting started / build & install / Use
 
